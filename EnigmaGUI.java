@@ -68,7 +68,14 @@ public class EnigmaGUI {
         JLabel outputLabel = new JLabel("Output ");
 
         JTextArea inputTextArea = new JTextArea();
-        JTextArea outputTextArea = new JTextArea(); 
+        JTextArea outputTextArea = new JTextArea();
+
+        //Adds the input and output to the frame
+        enigmaFrame.add(inputLabel, BorderLayout.CENTER);
+        enigmaFrame.add(inputTextArea, BorderLayout.CENTER);
+
+        enigmaFrame.add(outputLabel, BorderLayout.SOUTH);
+        enigmaFrame.add(outputTextArea, BorderLayout.SOUTH);
     }
   
 }
