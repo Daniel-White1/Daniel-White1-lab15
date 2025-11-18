@@ -1,82 +1,83 @@
 import javax.swing.*;
 import java.awt.*;
 
-public class EnigmaFrame {
-    public static void main(String args[]){
+public class EnigmaFrame extends JFrame{
 
-        //I Am going to make 2 panels to organize the GUI easily
-        //One will Hold the inner, middle, and outer roters.
-        //The Second Will hold the inital position text box and the Encrypt and Decrypt buttons
-        //These two panels will be in the north side of the JFrame
+    //Fields for panel one
+    private JComboBox<String> innerBox;
+    private JComboBox<String> middleBox;
+    private JComboBox<String> outerBox;
+
+    private JTextField initalTextField;
+    private JButton encryptButton;
+    private JButton decryptButton;
+
+    private JTextArea inputTextArea;
+    private JTextArea outputTextArea;
+
+    //Not enirely sure how many rotors I need because I sucked at the Enigma code so I am going to start at 5
+    private final String rotorArgs[] = {"1" , "2" , "3", "4", "5"};    
+
+    public EnigmaFrame(){
+        super();    
+        //I Am going to make one panels to organize the GUI easily
+        //One will Hold the inner, middle, outer roters, inital position text box and the Encrypt and Decrypt buttons
+        //These panels will be in the north side of the JFrame
 
         //The Input and output box will be simply placed the JFrame in the center and south position
 
         //The total JFrame object setup
-        JFrame enigmaFrame = new JFrame();
-        enigmaFrame.setTitle("Enigma GUI");
-        enigmaFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        enigmaFrame.setVisible(true);
+        this.setTitle("Enigma GUI");
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setVisible(true);
 
-        //Rotor panel objects
-        JPanel rotorPanel = new JPanel();
-        rotorPanel.setLayout(new BorderLayout());
-
-        //Rotor labels
-        JLabel innerRotorLabel = new JLabel("Inner ");
-        JLabel middleRotorLabel = new JLabel("Middle ");
-        JLabel outerRotorLabel = new JLabel("Outer ");
-
-        //Not enirely sure how many rotors because I sucked at the Enigma code so I am going to start at 5
-        String rotorArgs[] = {"1" , "2" , "3", "4", "5"};
-
+        //Top panel objects
+        JPanel topPanel = new JPanel();
+        topPanel.setLayout(new FlowLayout());
+        
         //Comboboxes to store the rotor values
-        JComboBox innerBox = new JComboBox<>(rotorArgs);
-        JComboBox middleBox = new JComboBox<>(rotorArgs);
-        JComboBox outerBox = new JComboBox<>(rotorArgs);
+        innerBox = new JComboBox<String>(rotorArgs);
+        middleBox = new JComboBox<String>(rotorArgs);
+        outerBox = new JComboBox<String>(rotorArgs);
+        
+        //Textbox to store the inital setupt
+        initalTextField = new JTextField();
 
-        //First of all setting up the layout of the rotorPanel
-        rotorPanel.add(innerRotorLabel, BorderLayout.WEST);
-        rotorPanel.add(innerBox, BorderLayout.WEST);
+        //Buttons to setup the Encrypt and Decryption
+        encryptButton = new JButton("Encrypt");
+        decryptButton = new JButton("Decrypt");
 
-        rotorPanel.add(middleRotorLabel, BorderLayout.CENTER);
-        rotorPanel.add(middleBox, BorderLayout.CENTER);
+        //Set up the flow layout of the topPanel ie: inner rotor -> middle rotor -> ... -> encrypt button -> decrypt button
+        topPanel.add(new JLabel("Inner "));
+        topPanel.add(innerBox);
 
-        rotorPanel.add(outerRotorLabel, BorderLayout.EAST);
-        rotorPanel.add(outerBox, BorderLayout.EAST);
+        topPanel.add(new JLabel("Middle "));
+        topPanel.add(middleBox);
 
-        //Inital Positions/Ecrypt/Decrypt panel will be called miscPanel
-        JPanel miscPanel = new JPanel();
-        rotorPanel.setLayout(new BorderLayout());
+        topPanel.add(new JLabel("Outer "));
+        topPanel.add(outerBox);
 
-        //Inital position objects
-        JLabel initalPosLabel = new JLabel("Inital Position ");
-        JTextField initalTextField = new JTextField();
+        topPanel.add(new JLabel("Inital Position "));
+        topPanel.add(initalTextField);
 
-        //Encrypt and Decrypt Buttons
-        JButton encryptButton = new JButton("Encrypt");
-        JButton decryptButton = new JButton("Decrypt");
+        topPanel.add(encryptButton);
+        topPanel.add(decryptButton);
 
-        //Setting up the layout of the rotorPanel
-        miscPanel.add(initalPosLabel, BorderLayout.WEST);
-        miscPanel.add(initalTextField, BorderLayout.WEST);
-
-        miscPanel.add(encryptButton, BorderLayout.CENTER);
-        miscPanel.add(decryptButton, BorderLayout.EAST);
-
+        //Now we have the objects in the frame to setup
         //Finally the text boxes for input and output
-        JLabel inputLabel = new JLabel("Input ");
-        JLabel outputLabel = new JLabel("Output ");
 
-        JTextArea inputTextArea = new JTextArea();
-        JTextArea outputTextArea = new JTextArea();
+        inputTextArea = new JTextArea();
+        outputTextArea = new JTextArea();
 
-        //Adds the input and output to the frame
-        enigmaFrame.add(inputLabel, BorderLayout.CENTER);
-        enigmaFrame.add(inputTextArea, BorderLayout.CENTER);
+        //Adds all the objects to the frame
+        this.add(topPanel, BorderLayout.NORTH);
 
-        enigmaFrame.add(outputLabel, BorderLayout.SOUTH);
-        enigmaFrame.add(outputTextArea, BorderLayout.SOUTH);
+        this.add(new JLabel("Input "), BorderLayout.CENTER);
+        this.add(inputTextArea, BorderLayout.CENTER);
 
-        enigmaFrame.pack();
+        this.add( new JLabel("Output "), BorderLayout.SOUTH);
+        this.add(outputTextArea, BorderLayout.SOUTH);
+
+        this.pack();
     }
 }
