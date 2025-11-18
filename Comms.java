@@ -25,7 +25,7 @@ public class Comms {
     String message = args[5];
 
     // Call the Enigma's constructor to build the machine
-    Enigma enigma = new Enigma(id1, id2, id3, args[3]);
+    EnigmaGUI enigma = new EnigmaGUI(id1, id2, id3, args[3]);
 
     // Encrypt or Decrypt
     if( encrypt )
