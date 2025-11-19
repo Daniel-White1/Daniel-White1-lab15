@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.*;
 
 public class EnigmaFrame extends JFrame{
 
@@ -14,6 +15,17 @@ public class EnigmaFrame extends JFrame{
 
     private JTextArea inputTextArea;
     private JTextArea outputTextArea;
+
+    int innerIndex;
+    int middleIndex;
+    int outerIndex;
+
+    String initalPos;
+    String input;
+    String decrypt;
+    String output;
+
+    String[] args;
 
     //Not enirely sure how many rotors I need because I sucked at the Enigma code so I am going to start at 5
     private final String rotorArgs[] = {"1" , "2" , "3", "4", "5"};    
@@ -41,7 +53,7 @@ public class EnigmaFrame extends JFrame{
         outerBox = new JComboBox<String>(rotorArgs);
         
         //Textbox to store the inital setupt
-        initalTextField = new JTextField();
+        initalTextField = new JTextField();xx
 
         //Buttons to setup the Encrypt and Decryption
         encryptButton = new JButton("Encrypt");
@@ -65,9 +77,12 @@ public class EnigmaFrame extends JFrame{
 
         //Now we have the objects in the frame to setup
         //Finally the text boxes for input and output
-
+        //We will set outputTextArea to false. Sure it doesnt matter in the backend as we will never be accepting it
+        //as a input and when encrypting and decrypting we will overwrite their text value but its better to encapsulate
+        //to prevent consumers from messing with stuff then not.
         inputTextArea = new JTextArea();
         outputTextArea = new JTextArea();
+        outputTextArea.setEditable(false);
 
         //Adds all the objects to the frame
         this.add(topPanel, BorderLayout.NORTH);
@@ -78,6 +93,53 @@ public class EnigmaFrame extends JFrame{
         this.add( new JLabel("Output "), BorderLayout.SOUTH);
         this.add(outputTextArea, BorderLayout.SOUTH);
 
+        //When configuring all the inputs to the enigma we want to have one listener to
+        //Write all the values.
+        EnigmaActionListener a = new EnigmaActionListener();
+        innerBox.addActionListener(a);
+        middleBox.addActionListener(a);
+        outerBox.addActionListener(a);
+        initalTextField.addActionListener(a);
+
+        //Creates a action for decrypting the code
+        decryptButton.addActionListener((e) -> {
+            args[0] = String.valueOf(innerIndex) + 1;
+            args[1] = String.valueOf(middleIndex) + 1;
+            args[2] = String.valueOf(outerIndex) + 1;
+            args[3] = initalPos;
+            args[4] = "decrypt";
+            args[5] = input;
+            output = Comms.run(args);
+        });
+        //Creates a action for encrypting the code
+        encryptButton.addActionListener((e) -> {
+            args[0] = String.valueOf(innerIndex) + 1;
+            args[1] = String.valueOf(middleIndex) + 1;
+            args[2] = String.valueOf(outerIndex) + 1;
+            args[3] = initalPos;
+            //technically doesnt matter since it can be everything but decrypt
+            args[4] = "encrypt";
+            args[5] = input;
+            output = Comms.run(args);
+        });
+        //Packs the code
         this.pack();
+    }
+
+    //Creates a private inner class to handle events that sets up the Enigma
+    private class EnigmaActionListener implements ActionListener{
+        public void actionPerformed(ActionEvent e){
+            //Gets the index of the rotor number of each rotor
+            innerIndex = innerBox.getSelectedIndex();
+            middleIndex = middleBox.getSelectedIndex();
+            outerIndex = outerBox.getSelectedIndex();
+
+            //Gets the inital position of the rotors
+            initalPos = initalTextField.getText();
+
+            //Gets the text of the input
+            input = inputTextArea.getSelectedText();
+
+        }
     }
 }
