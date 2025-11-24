@@ -53,7 +53,7 @@ public class EnigmaFrame extends JFrame{
         outerBox = new JComboBox<String>(rotorArgs);
         
         //Textbox to store the inital setupt
-        initalTextField = new JTextField();xx
+        initalTextField = new JTextField();
 
         //Buttons to setup the Encrypt and Decryption
         encryptButton = new JButton("Encrypt");
@@ -110,6 +110,7 @@ public class EnigmaFrame extends JFrame{
             args[4] = "decrypt";
             args[5] = input;
             output = Comms.run(args);
+            outputTextArea.setText("" + output);
         });
         //Creates a action for encrypting the code
         encryptButton.addActionListener((e) -> {
@@ -121,6 +122,7 @@ public class EnigmaFrame extends JFrame{
             args[4] = "encrypt";
             args[5] = input;
             output = Comms.run(args);
+            outputTextArea.setText("" + output);
         });
         //Packs the code
         this.pack();
